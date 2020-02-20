@@ -1,3 +1,17 @@
+" Disable Vi compatibility
+set nocompatible
+
+" enable mouse
+set mouse=a
+
+" Centralize backups, swapfiles and undo history
+set backupdir=$HOME/.vim/backups
+set directory=$HOME/.vim/swaps
+if exists("&undodir")
+    set undodir=$HOME/.vim/undo
+endif
+set viminfo+=n$HOME/.vim/.viminfo
+
 " Specify a directory for plugins
 " - For Neovim: stdpath('data') . '/plugged'
 " - Avoid using standard Vim directory names like 'plugin'
