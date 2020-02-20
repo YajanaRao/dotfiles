@@ -1,8 +1,36 @@
+
+" Use the Solarized Dark theme
+set background=dark
+
+
 " Disable Vi compatibility
 set nocompatible
 
 " enable mouse
 set mouse=a
+
+" Enable line numbers
+set number
+
+" Enable syntax highlighting
+syntax on
+
+" Move between windows using ctrl
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+let g:netrw_banner = 0
+let g:netrw_liststyle = 3
+let g:netrw_browse_split = 4
+let g:netrw_altv = 1
+let g:netrw_winsize = 25
+augroup ProjectDrawer
+  autocmd!
+  autocmd VimEnter * :Vexplore
+augroup END
+
 
 " Centralize backups, swapfiles and undo history
 set backupdir=$HOME/.vim/backups
@@ -63,3 +91,10 @@ inoremap $3 {}<esc>i
 inoremap $4 {<esc>o}<esc>O
 inoremap $q ''<esc>i
 inoremap $e ""<esc>i
+
+" Show the current mode
+set showmode
+" Show the filename in the window titlebar
+set title
+" Show the (partial) command as it’s being typed
+set showcmd
