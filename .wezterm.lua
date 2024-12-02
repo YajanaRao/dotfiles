@@ -42,7 +42,7 @@ local config = {
 		{
 			key = "f",
 			mods = "LEADER",
-			action = wezterm.action.ShowTabNavigator,
+			action = act.ShowTabNavigator,
 		},
 		{
 			key = "i",
@@ -58,29 +58,29 @@ local config = {
 		{
 			mods = "LEADER",
 			key = "v",
-			action = wezterm.action.SplitVertical({ domain = "CurrentPaneDomain" }),
+			action = act.SplitVertical({ domain = "CurrentPaneDomain" }),
 		},
 		{
 			mods = "LEADER",
 			key = "s",
-			action = wezterm.action.SplitHorizontal({ domain = "CurrentPaneDomain" }),
+			action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }),
 		},
 		{
 			mods = "LEADER",
 			key = "m",
-			action = wezterm.action.TogglePaneZoomState,
+			action = act.TogglePaneZoomState,
 		},
 		-- rotate panes
 		{
 			mods = "LEADER",
 			key = "Space",
-			action = wezterm.action.RotatePanes("Clockwise"),
+			action = act.RotatePanes("Clockwise"),
 		},
 		-- show the pane selection mode, but have it swap the active and selected panes
 		{
 			mods = "LEADER",
 			key = "0",
-			action = wezterm.action.PaneSelect({
+			action = act.PaneSelect({
 				mode = "SwapWithActive",
 			}),
 		},
@@ -88,16 +88,16 @@ local config = {
 		{
 			mods = "LEADER",
 			key = "w",
-			action = wezterm.action.ShowLauncherArgs({
+			action = act.ShowLauncherArgs({
 				flags = "FUZZY|WORKSPACES",
 			}),
 		},
-		{ key = "n", mods = "LEADER", action = wezterm.action.SwitchWorkspaceRelative(1) },
+		{ key = "n", mods = "LEADER", action = act.SwitchWorkspaceRelative(1) },
 		--Rename Workspace
 		{
 			mods = "LEADER",
 			key = "R",
-			action = wezterm.action.PromptInputLine({
+			action = act.PromptInputLine({
 				description = "Enter new name for workspace",
 				action = wezterm.action_callback(function(_, _, line)
 					if line then
