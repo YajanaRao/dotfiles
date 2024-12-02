@@ -20,6 +20,7 @@ local icons = {
 	["pacman"] = "󰮯 ",
 	["paru"] = "󰮯 ",
 	["pwsh.exe"] = wezterm.nerdfonts.md_console,
+	["C:\\Program Files\\PowerShell"] = wezterm.nerdfonts.md_console,
 	["sudo"] = wezterm.nerdfonts.fa_hashtag,
 	["vim"] = wezterm.nerdfonts.dev_vim,
 	["wget"] = wezterm.nerdfonts.mdi_arrow_down_box,
@@ -132,19 +133,8 @@ local config = {
 		bottom = 0,
 	},
 	inactive_pane_hsb = {
-		saturation = 1.0,
-		brightness = 1.0,
-	},
-	ssh_domains = {
-		{
-			-- This name identifies the domain
-			name = "sergio",
-			-- The hostname or address to connect to. Will be used to match settings
-			-- from your ssh config file
-			remote_address = "10.0.216.162",
-			-- The username to use on the remote host
-			username = "ubuntu",
-		},
+		brightness = 0.5,
+		saturation = 0.5,
 	},
 }
 
