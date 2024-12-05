@@ -3,8 +3,11 @@ Configuration files
 
 ## Tools
 - Wezterm
-- NVIM
+- Nvim
 - Starship
 
-![image](https://github.com/user-attachments/assets/72d10b40-ee49-4d18-93fa-06098f354dd7)
+Theme: Tokyo Night
+Font: Jetbrains Mono
+
+<img width="1470" alt="image" src="https://github.com/user-attachments/assets/9445d3a8-4ce8-4d09-a545-1a5788127b72">
 
