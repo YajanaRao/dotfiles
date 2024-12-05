@@ -23,8 +23,8 @@ config.cursor_blink_ease_out = "Constant"
 
 -- fonts
 config.font = wezterm.font("JetBrains Mono")
--- config.font_size = 11
--- config.line_height = 1.35
+config.font_size = 16.5
+config.line_height = 1.2
 
 -- tabs
 config.enable_tab_bar = true
