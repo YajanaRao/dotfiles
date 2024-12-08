@@ -13,7 +13,10 @@ local config = {
 		saturation = 0.5,
 	},
 }
-
+config.front_end = "WebGpu"
+config.freetype_load_flags = "NO_HINTING"
+config.freetype_load_target = "Light"
+config.freetype_render_target = "HorizontalLcd"
 -- Cursor
 config.cursor_thickness = 4
 config.default_cursor_style = "BlinkingBar"
@@ -22,7 +25,7 @@ config.cursor_blink_ease_in = "Constant"
 config.cursor_blink_ease_out = "Constant"
 
 -- fonts
-config.font = wezterm.font("JetBrains Mono")
+config.font = wezterm.font({ family = "JetBrains Mono", weight = "Regular" })
 config.font_size = 16.5
 config.line_height = 1.2
 
@@ -126,6 +129,14 @@ config.keys = {
 	},
 	{ key = "p", mods = "LEADER", action = wezterm.action.SwitchWorkspaceRelative(-1) },
 }
+-- I can use the tab navigator (LDR t), but I also want to quickly navigate tabs with index
+for i = 1, 9 do
+	table.insert(config.keys, {
+		key = tostring(i),
+		mods = "LEADER",
+		action = act.ActivateTab(i - 1),
+	})
+end
 
 -- Colorscheme
 -- FIXME works on windows. Make it work for MacOS and Linux
@@ -146,15 +157,17 @@ wezterm.on("gui-startup", function(window)
 	window:gui_window():maximize()
 end)
 
-local function tab_title(tab_info)
-	local title = tab_info.tab_title
-	-- if the tab title is explicitly set, take that
-	if title and #title > 0 then
-		return title
+local function get_process(tab)
+	if not tab.active_pane or tab.active_pane.foreground_process_name == "" then
+		return "[?]"
 	end
-	-- Otherwise, use the title from the active pane
-	-- in that tab
-	return tab_info.active_pane.title
+
+	local process_name = string.gsub(tab.active_pane.foreground_process_name, "(.*[/\\])(.*)", "%2")
+	if string.find(process_name, "kubectl") then
+		process_name = "kubectl"
+	end
+
+	return process_name
 end
 
 wezterm.on("format-tab-title", function(tab, tabs, panes, conf, hover, max_width)
@@ -170,7 +183,7 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, conf, hover, max_width
 
 	local edge_foreground = background
 
-	local title = tab_title(tab)
+	local title = string.format("%s", get_process(tab))
 
 	-- ensure that the titles fit in the available space,
 	-- and that we have room for the edges.
