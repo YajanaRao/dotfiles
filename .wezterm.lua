@@ -7,6 +7,7 @@ local mux = wezterm.mux
 
 local config = {
 	webgpu_power_preference = "HighPerformance",
+	animation_fps = 1,
 
 	inactive_pane_hsb = {
 		brightness = 0.5,
@@ -17,6 +18,7 @@ config.front_end = "WebGpu"
 config.freetype_load_flags = "NO_HINTING"
 config.freetype_load_target = "Light"
 config.freetype_render_target = "HorizontalLcd"
+
 -- Cursor
 config.cursor_thickness = 4
 config.default_cursor_style = "BlinkingBar"
@@ -26,7 +28,12 @@ config.cursor_blink_ease_out = "Constant"
 
 -- fonts
 config.font = wezterm.font({ family = "JetBrains Mono", weight = "Regular" })
-config.font_size = 16.5
+
+if wezterm.target_triple:find("windows") then
+	config.font_size = 12
+else
+	config.font_size = 16.5
+end
 config.line_height = 1.2
 
 -- tabs
@@ -163,8 +170,9 @@ local function get_process(tab)
 	end
 
 	local process_name = string.gsub(tab.active_pane.foreground_process_name, "(.*[/\\])(.*)", "%2")
-	if string.find(process_name, "kubectl") then
-		process_name = "kubectl"
+
+	if string.find(process_name, "lua-language-server.exe") then
+		process_name = "nvim"
 	end
 
 	return process_name
