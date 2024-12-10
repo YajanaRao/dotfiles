@@ -8,7 +8,6 @@ local mux = wezterm.mux
 local config = {
 	webgpu_power_preference = "HighPerformance",
 	animation_fps = 1,
-
 	inactive_pane_hsb = {
 		brightness = 0.5,
 		saturation = 0.5,
@@ -27,8 +26,25 @@ config.cursor_blink_ease_in = "Constant"
 config.cursor_blink_ease_out = "Constant"
 
 -- fonts
-config.font = wezterm.font({ family = "JetBrains Mono", weight = "Regular" })
-
+config.font = wezterm.font({ family = "JetBrains Mono" })
+config.font_rules = {
+	{
+		intensity = "Bold",
+		italic = true,
+		font = wezterm.font({ family = "Maple Mono", weight = "Bold", style = "Italic" }),
+	},
+	{
+		italic = true,
+		intensity = "Half",
+		font = wezterm.font({ family = "Maple Mono", weight = "DemiBold", style = "Italic" }),
+	},
+	{
+		italic = true,
+		intensity = "Normal",
+		font = wezterm.font({ family = "Maple Mono", style = "Italic" }),
+	},
+}
+config.bold_brightens_ansi_colors = true
 if wezterm.target_triple:find("windows") then
 	config.font_size = 12
 else
@@ -50,7 +66,6 @@ config.window_decorations = "RESIZE"
 
 -- for transparent background
 config.window_background_opacity = 0.98
-
 config.window_frame = {
 	border_bottom_height = "0.5cell",
 }
@@ -146,7 +161,6 @@ for i = 1, 9 do
 end
 
 -- Colorscheme
--- FIXME works on windows. Make it work for MacOS and Linux
 config.color_scheme_dirs = { wezterm.home_dir .. "/AppData/Local/nvim-data/tokyonight/extras/wezterm" }
 config.color_scheme = "tokyonight_night"
 wezterm.add_to_config_reload_watch_list(config.color_scheme_dirs[1] .. config.color_scheme .. ".toml")
@@ -170,7 +184,6 @@ local function get_process(tab)
 	end
 
 	local process_name = string.gsub(tab.active_pane.foreground_process_name, "(.*[/\\])(.*)", "%2")
-
 	if string.find(process_name, "lua-language-server.exe") then
 		process_name = "nvim"
 	end
