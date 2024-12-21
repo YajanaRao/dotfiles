@@ -48,7 +48,7 @@ config.bold_brightens_ansi_colors = true
 if wezterm.target_triple:find("windows") then
 	config.font_size = 12
 else
-	config.font_size = 16.5
+	config.font_size = 14
 end
 config.line_height = 1.2
 
