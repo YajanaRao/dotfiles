@@ -59,6 +59,7 @@ config.use_fancy_tab_bar = false
 config.show_tab_index_in_tab_bar = true
 config.tab_bar_at_bottom = false
 config.tab_max_width = 64
+config.show_new_tab_button_in_tab_bar = false
 
 -- window
 config.window_close_confirmation = "NeverPrompt"
@@ -195,40 +196,44 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, conf, hover, max_width
 	local colors = conf.resolved_palette
 	local background = colors.tab_bar.inactive_tab.bg_color
 	local foreground = colors.tab_bar.inactive_tab.fg_color
-	local edge_background = colors.tab_bar.background
+	local head_background = colors.ansi[8]
 
 	if tab.is_active or hover then
-		background = colors.tab_bar.active_tab.bg_color
-		foreground = colors.tab_bar.active_tab.fg_color
+		foreground = colors.compose_cursor
+		head_background = colors.compose_cursor
 	end
-
-	local edge_foreground = background
 
 	local title = string.format("%s", get_process(tab))
 
 	-- ensure that the titles fit in the available space,
 	-- and that we have room for the edges.
-	local max = max_width - 8
+	local max = max_width
 	if #title > max then
 		title = wezterm.truncate_right(title, max) .. "…"
 	end
 
 	return {
-		{ Background = { Color = edge_background } },
-		{ Foreground = { Color = edge_foreground } },
-		{ Text = "" },
+		{ Background = { Color = colors.background } },
+		{ Foreground = { Color = head_background } },
+		{ Text = wezterm.nerdfonts.ple_left_half_circle_thick },
+		{ Background = { Color = head_background } },
+		{ Foreground = { Color = colors.background } },
+		{ Text = (tab.tab_index + 1) .. " " },
 		{ Background = { Color = background } },
 		{ Foreground = { Color = foreground } },
-		{ Attribute = { Intensity = tab.is_active and "Bold" or "Normal" } },
-		{ Text = " " .. (tab.tab_index + 1) .. ": " .. title .. " " },
-		{ Background = { Color = edge_background } },
-		{ Foreground = { Color = edge_foreground } },
-		{ Text = " " },
+		{ Text = " " .. title .. " " },
+		{ Background = { Color = colors.background } },
+		{ Foreground = { Color = background } },
+		{ Text = wezterm.nerdfonts.ple_right_half_circle_thick },
+
+		{ Background = { Color = colors.tab_bar.background } },
+		{ Text = " " },
 	}
 end)
 
 wezterm.on("update-status", function(window, pane)
-	local time = wezterm.strftime("%Y-%m-%d %H:%M")
+	local time = wezterm.strftime("%H:%M")
+	local date = wezterm.strftime("%Y-%m-%d")
 	local colors = wezterm.get_builtin_color_schemes()[config.color_scheme]
 	-- Right status
 	window:set_right_status(wezterm.format({
@@ -237,11 +242,25 @@ wezterm.on("update-status", function(window, pane)
 
 		{ Text = " " },
 		{ Background = { Color = colors.background } },
-		{ Foreground = { Color = colors.ansi[8] } },
+		{ Foreground = { Color = colors.ansi[4] } },
 		{ Text = wezterm.nerdfonts.ple_left_half_circle_thick },
-		{ Background = { Color = colors.ansi[8] } },
+		{ Background = { Color = colors.ansi[4] } },
 		{ Foreground = { Color = colors.background } },
 		{ Text = wezterm.nerdfonts.md_calendar_clock .. " " },
+		{ Background = { Color = colors.ansi[1] } },
+		{ Foreground = { Color = colors.foreground } },
+		{ Text = " " .. date },
+		{ Background = { Color = colors.background } },
+		{ Foreground = { Color = colors.ansi[1] } },
+		{ Text = wezterm.nerdfonts.ple_right_half_circle_thick },
+
+		{ Text = " " },
+		{ Background = { Color = colors.background } },
+		{ Foreground = { Color = colors.ansi[2] } },
+		{ Text = wezterm.nerdfonts.ple_left_half_circle_thick },
+		{ Background = { Color = colors.ansi[2] } },
+		{ Foreground = { Color = colors.background } },
+		{ Text = wezterm.nerdfonts.md_timer_sand .. " " },
 		{ Background = { Color = colors.ansi[1] } },
 		{ Foreground = { Color = colors.foreground } },
 		{ Text = " " .. time },
