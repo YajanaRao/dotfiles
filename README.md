@@ -9,5 +9,5 @@ Configuration files
 Theme: Tokyo Night
 Font: Jetbrains Mono, Maple Mono
 
-<img width="1470" alt="image" src="https://github.com/user-attachments/assets/5c173b07-930d-417a-9f0d-211aaca2cb8d">
+<img width="1470" alt="image" src="https://github.com/user-attachments/assets/02524d75-ea08-4c74-9fcf-b296102c0e60" />
 
