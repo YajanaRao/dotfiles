@@ -7,13 +7,14 @@ local mux = wezterm.mux
 
 local config = {
 	webgpu_power_preference = "HighPerformance",
+	max_fps = 120,
 	animation_fps = 1,
 	inactive_pane_hsb = {
-		brightness = 0.5,
-		saturation = 0.5,
+		brightness = 0.8,
+		saturation = 0.8,
 	},
 }
-config.front_end = "WebGpu"
+-- config.front_end = "WebGpu"
 config.freetype_load_flags = "NO_HINTING"
 config.freetype_load_target = "Light"
 config.freetype_render_target = "HorizontalLcd"
@@ -45,12 +46,7 @@ config.font_rules = {
 	},
 }
 config.bold_brightens_ansi_colors = true
-if wezterm.target_triple:find("windows") then
-	config.font_size = 12
-else
-	config.font_size = 14
-end
-config.line_height = 1.2
+config.font_size = 13
 
 -- tabs
 config.enable_tab_bar = true
@@ -80,6 +76,27 @@ config.window_padding = {
 -- Keymaps
 config.leader = { key = "a", mods = "CTRL", timeout_milliseconds = 1000 }
 config.keys = {
+	{
+		key = ";",
+		mods = "LEADER",
+		action = wezterm.action_callback(function(_, pane)
+			local tab = pane:tab()
+			local panes = tab:panes_with_info()
+			if #panes == 1 then
+				pane:split({
+					direction = "Right",
+					size = 0.4,
+				})
+			elseif not panes[1].is_zoomed then
+				panes[1].pane:activate()
+				tab:set_zoomed(true)
+			elseif panes[1].is_zoomed then
+				tab:set_zoomed(false)
+				panes[2].pane:activate()
+			end
+		end),
+	},
+	{ key = "i", mods = "CTRL", action = wezterm.action.EmitEvent("image_preview") },
 	-- tabs
 	{
 		key = "f",
@@ -242,30 +259,30 @@ wezterm.on("update-status", function(window, pane)
 
 		{ Text = " " },
 		{ Background = { Color = colors.background } },
-		{ Foreground = { Color = colors.ansi[4] } },
+		{ Foreground = { Color = colors.brights[3] } },
 		{ Text = wezterm.nerdfonts.ple_left_half_circle_thick },
-		{ Background = { Color = colors.ansi[4] } },
+		{ Background = { Color = colors.brights[3] } },
 		{ Foreground = { Color = colors.background } },
 		{ Text = wezterm.nerdfonts.md_calendar_clock .. " " },
-		{ Background = { Color = colors.ansi[1] } },
+		{ Background = { Color = colors.brights[1] } },
 		{ Foreground = { Color = colors.foreground } },
 		{ Text = " " .. date },
 		{ Background = { Color = colors.background } },
-		{ Foreground = { Color = colors.ansi[1] } },
+		{ Foreground = { Color = colors.brights[1] } },
 		{ Text = wezterm.nerdfonts.ple_right_half_circle_thick },
 
 		{ Text = " " },
 		{ Background = { Color = colors.background } },
-		{ Foreground = { Color = colors.ansi[2] } },
+		{ Foreground = { Color = colors.brights[2] } },
 		{ Text = wezterm.nerdfonts.ple_left_half_circle_thick },
-		{ Background = { Color = colors.ansi[2] } },
+		{ Background = { Color = colors.brights[2] } },
 		{ Foreground = { Color = colors.background } },
 		{ Text = wezterm.nerdfonts.md_timer_sand .. " " },
-		{ Background = { Color = colors.ansi[1] } },
+		{ Background = { Color = colors.brights[1] } },
 		{ Foreground = { Color = colors.foreground } },
 		{ Text = " " .. time },
 		{ Background = { Color = colors.background } },
-		{ Foreground = { Color = colors.ansi[1] } },
+		{ Foreground = { Color = colors.brights[1] } },
 		{ Text = wezterm.nerdfonts.ple_right_half_circle_thick },
 	}))
 end)
