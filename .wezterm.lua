@@ -10,8 +10,8 @@ local config = {
 	max_fps = 120,
 	animation_fps = 1,
 	inactive_pane_hsb = {
-		brightness = 0.8,
-		saturation = 0.8,
+		brightness = 0.7,
+		saturation = 0.7,
 	},
 }
 -- config.front_end = "WebGpu"
@@ -46,7 +46,7 @@ config.font_rules = {
 	},
 }
 config.bold_brightens_ansi_colors = true
-config.font_size = 13
+config.font_size = 11
 
 -- tabs
 config.enable_tab_bar = true
@@ -62,9 +62,9 @@ config.window_close_confirmation = "NeverPrompt"
 config.window_decorations = "RESIZE"
 
 -- for transparent background
-config.window_background_opacity = 0.98
+config.window_background_opacity = 1
 config.window_frame = {
-	border_bottom_height = "0.5cell",
+	border_bottom_height = 0,
 }
 config.window_padding = {
 	left = 0,
@@ -179,12 +179,36 @@ for i = 1, 9 do
 end
 
 -- Colorscheme
-config.color_scheme_dirs = { wezterm.home_dir .. "/AppData/Local/nvim-data/tokyonight/extras/wezterm" }
-config.color_scheme = "tokyonight_night"
-wezterm.add_to_config_reload_watch_list(config.color_scheme_dirs[1] .. config.color_scheme .. ".toml")
+config.color_scheme = "Everforest Dark (Gogh)"
 
 config.colors = {
-	indexed = { [241] = "#65bcff" },
+	-- Default colors
+	foreground = "#d3c6aa",
+	background = "#000000",
+	cursor_bg = "#d3c6aa",
+	cursor_border = "#d3c6aa",
+	cursor_fg = "#2d353b",
+	-- ANSI colors
+	ansi = {
+		"#4b565c",
+		"#e67e80",
+		"#a7c080",
+		"#dbbc7f",
+		"#7fbbb3",
+		"#d699b6",
+		"#83c092",
+		"#d3c6aa",
+	},
+	brights = {
+		"#5c6a72",
+		"#f85552",
+		"#8da101",
+		"#dfa000",
+		"#3a94c5",
+		"#df69ba",
+		"#35a77c",
+		"#dfddc8",
+	},
 }
 
 if wezterm.target_triple:find("windows") then
@@ -210,14 +234,43 @@ local function get_process(tab)
 end
 
 wezterm.on("format-tab-title", function(tab, tabs, panes, conf, hover, max_width)
-	local colors = conf.resolved_palette
-	local background = colors.tab_bar.inactive_tab.bg_color
-	local foreground = colors.tab_bar.inactive_tab.fg_color
+	local colors = wezterm.get_builtin_color_schemes()[config.color_scheme]
+	wezterm.log_info("format-tab-title", colors)
+	-- {
+	--     "ansi": [
+	--         "#4b565c",
+	--         "#e67e80",
+	--         "#a7c080",
+	--         "#dbbc7f",
+	--         "#7fbbb3",
+	--         "#d699b6",
+	--         "#83c092",
+	--         "#d3c6aa",
+	--     ],
+	--     "background": "#2d353b",
+	--     "brights": [
+	--         "#5c6a72",
+	--         "#f85552",
+	--         "#8da101",
+	--         "#dfa000",
+	--         "#3a94c5",
+	--         "#df69ba",
+	--         "#35a77c",
+	--         "#dfddc8",
+	--     ],
+	--     "cursor_bg": "#d3c6aa",
+	--     "cursor_border": "#d3c6aa",
+	--     "cursor_fg": "#2d353b",
+	--     "foreground": "#d3c6aa",
+	--     "indexed": [],
+	-- }
+	local background = colors.ansi[1]
+	local foreground = colors.foreground
 	local head_background = colors.ansi[8]
 
 	if tab.is_active or hover then
-		foreground = colors.compose_cursor
-		head_background = colors.compose_cursor
+		foreground = colors.ansi[3]
+		head_background = colors.ansi[3]
 	end
 
 	local title = string.format("%s", get_process(tab))
@@ -243,7 +296,7 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, conf, hover, max_width
 		{ Foreground = { Color = background } },
 		{ Text = wezterm.nerdfonts.ple_right_half_circle_thick },
 
-		{ Background = { Color = colors.tab_bar.background } },
+		{ Background = { Color = colors.background } },
 		{ Text = " " },
 	}
 end)
@@ -259,9 +312,9 @@ wezterm.on("update-status", function(window, pane)
 
 		{ Text = " " },
 		{ Background = { Color = colors.background } },
-		{ Foreground = { Color = colors.brights[3] } },
+		{ Foreground = { Color = colors.brights[7] } },
 		{ Text = wezterm.nerdfonts.ple_left_half_circle_thick },
-		{ Background = { Color = colors.brights[3] } },
+		{ Background = { Color = colors.brights[7] } },
 		{ Foreground = { Color = colors.background } },
 		{ Text = wezterm.nerdfonts.md_calendar_clock .. " " },
 		{ Background = { Color = colors.brights[1] } },
