@@ -1,1 +1,0 @@
-mklink /H .wezterm.lua ..\

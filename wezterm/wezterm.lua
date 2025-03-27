@@ -46,7 +46,7 @@ config.font_rules = {
 	},
 }
 config.bold_brightens_ansi_colors = true
-config.font_size = 11
+config.font_size = 18
 
 -- tabs
 config.enable_tab_bar = true
