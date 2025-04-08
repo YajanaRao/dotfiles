@@ -55,4 +55,16 @@ def hs [] {
     }
 }
 
-source ~/.zoxide.nu
+
+def lsh [] {
+    let selected = (
+        history  | get command | where $it =~ '^ssh ' | uniq | to text | fzf
+    )
+    if $selected != '' {
+        nu -c $selected
+    }
+}
+
+source ./plugins/zoxide.nu
+source ./completions/git-completions.nu
+
