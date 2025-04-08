@@ -5,7 +5,8 @@
   home.username = "yajanarao";
   home.homeDirectory = "/Users/yajanarao";
 
-  home.stateVersion = "2.92.0"; # or your current nix version
+  home.stateVersion = "24.11"; # or your current nix version
+home.enableNixpkgsReleaseCheck = false;
 
   programs.home-manager.enable = true;
 
