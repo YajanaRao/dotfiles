@@ -7,21 +7,16 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { nixpkgs, home-manager, ... }:
-    let
-      system = "aarch64-darwin"; # or "x86_64-linux" if on Linux
-      pkgs = import nixpkgs {
-        inherit system;
-        config.allowUnfree = true;
-      };
-    in {
-      homeConfigurations.yajana = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
+  outputs = { nixpkgs, home-manager, ... }: {
+    homeConfigurations = {
+      yajana = home-manager.lib.homeManagerConfiguration {
+        pkgs = import nixpkgs {
+          system = "aarch64-darwin"; # or "x86_64-linux" if on Linux
+        };
         modules = [
           ./home.nix
         ];
-        username = "yajana";
-        homeDirectory = "/Users/yajanarao"; # or /home/yajana on Linux
       };
     };
+  };
 }
