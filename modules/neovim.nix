@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, dotfilesRoot, ... }:
 
 {
   programs.neovim = {
@@ -9,5 +9,4 @@
   };
 
   # Sync config from your dotfiles repo
-  home.file.".config/nvim".source = ../config/nvim;
 }
